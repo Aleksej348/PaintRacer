@@ -8,7 +8,7 @@ public class CarConstructor : MonoBehaviour
 {
 	
 	[SerializeField] private Rigidbody2D wheelPrefab, pilotBody;	
-	[SerializeField] private Transform marker;
+	[SerializeField] private Transform marker,paintBar;
 	private List<Rigidbody2D> wheels = new();
 	[HideInInspector] public Camera mainCam;
 
@@ -110,6 +110,7 @@ public class CarConstructor : MonoBehaviour
 		applyButton.gameObject.SetActive(false);
 		wheelButton.gameObject.SetActive(false);
 		drawButton.gameObject.SetActive(false);
+		paintBar.gameObject.SetActive(true);
 		GameManager.gm.cinemachine.Follow=car.transform;
 		GameManager.gm.cinemachine.LookAt=car.transform;
 	}

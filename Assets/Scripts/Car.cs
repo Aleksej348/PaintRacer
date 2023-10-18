@@ -7,12 +7,11 @@ public class Car : MonoBehaviour
 	public List<Rigidbody2D> wheels;
 	[SerializeField] private float torqueSpeed,forceSpeed;
 	private float moveInput;
-	//private Rigidbody2D carRb;
+	private DrawManager _dm;
+	private DrawManager dm => _dm??=GameManager.gm.dm;
 	private void Start()
-	{
-		//carRb=GetComponent<Rigidbody2D>();
-		torqueSpeed=5000;
-		//forceSpeed=1000;
+	{		
+		torqueSpeed=6000;		
 	}
 	private void Update()
 	{
@@ -29,11 +28,23 @@ public class Car : MonoBehaviour
 				if(rb.velocity.normalized.x*moveInput<0) 
 					rb.AddForce(-rb.velocity,ForceMode2D.Impulse);
 			}
-			//carRb.AddForce(new Vector2(-moveInput*forceSpeed*Time.fixedDeltaTime,0));
 		}
 	}
-	private void BreakForce()
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		
+		if(collision.tag=="Basket")
+		{
+			dm.PaintValue+=30;
+			collision.gameObject.SetActive(false);
+		}
 	}
+	//private void OnCollisionEnter2D(Collision2D collision)
+	//{
+	//	if(collision.transform.tag=="Basket")
+	//	{
+	//		dm.PaintValue+=30;
+	//		collision.gameObject.SetActive(false);
+	//	}
+	//}
+
 }

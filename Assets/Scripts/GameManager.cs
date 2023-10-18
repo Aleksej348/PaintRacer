@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager gm;
 
-	[SerializeField] private float scrollSpeed,lensSizeMax;
+	[SerializeField] private float scrollSpeed,lensSizeMax;	
 	public CinemachineVirtualCamera cinemachine;
 	[HideInInspector] public DrawManager dm;
 	[HideInInspector] public CarConstructor constructor;
@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
 		mainCam=Camera.main;
 		dm.mainCam=mainCam;
 		constructor.mainCam=mainCam;
+		dm.Init();
+		constructor.Init();
 	}
 	private void Update()
 	{
