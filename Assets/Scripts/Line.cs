@@ -4,25 +4,13 @@ using UnityEngine;
 
 public class Line : MonoBehaviour
 {
-	[SerializeField] private LineRenderer _renderer;
-	public EdgeCollider2D _collider;
+	[SerializeField] protected LineRenderer _renderer;	
 
-	private readonly List<Vector2> _points = new List<Vector2>();
+	public readonly List<Vector2> _points = new List<Vector2>();
 	
+	public virtual void SetPosition(Vector2 pos){}
 
-	public void SetPosition(Vector2 pos)
-	{
-		pos-=(Vector2)transform.position;
-		if(!CanAppend(pos))
-			return;
-
-		_points.Add(pos);		
-		_renderer.positionCount++;
-		_renderer.SetPosition(_renderer.positionCount-1,pos);
-		_collider.SetPoints(_points);
-	}
-
-	private bool CanAppend(Vector2 pos)
+	public bool CanAppend(Vector2 pos)
 	{
 		if(_renderer.positionCount==0)
 			return true;

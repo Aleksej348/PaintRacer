@@ -44,6 +44,12 @@ public class DrawManager : MonoBehaviour
 			if(Input.GetMouseButtonUp(0))
 			{
 				lines.Add(currLine);
+				if(mode==DrawMode.drawing)
+				{
+					var points = new List<Vector2>(currLine._points);
+					points.Reverse();
+					currLine._points.AddRange(points);
+				}
 			}
 		}
 	}

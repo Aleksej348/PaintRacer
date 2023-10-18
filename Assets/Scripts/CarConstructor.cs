@@ -1,13 +1,14 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CarConstructor : MonoBehaviour
-{	
-	[SerializeField] private Rigidbody2D wheelPrefab;
-	[SerializeField] private Head pilotHead;
-	[SerializeField] private Transform pilotBody, marker, cinemachine;
+{
+	
+	[SerializeField] private Rigidbody2D wheelPrefab, pilotBody;	
+	[SerializeField] private Transform marker;
 	private List<Rigidbody2D> wheels = new();
 	[HideInInspector] public Camera mainCam;
 
@@ -81,15 +82,13 @@ public class CarConstructor : MonoBehaviour
 	{
 		if(wheels.Count<1)
 			return;
-		Car car = GetLargestLine(dm.lines).gameObject.AddComponent<Car>();
+		Line generalLine = GetLargestLine(dm.lines);
+		Car car = generalLine.gameObject.AddComponent<Car>();
 		Rigidbody2D carRb = car.gameObject.AddComponent<Rigidbody2D>();
 		carRb.drag=0.1f;
 		carRb.angularDrag=1;
-		car.wheels=new List<Rigidbody2D>(wheels);
-		car.transform.name="Car";
-		pilotHead.joint.connectedBody=carRb;
-		pilotHead.transform.parent=car.transform;
-		pilotBody.parent=car.transform;
+		car.wheels=new List<Rigidbody2D>(wheels);	
+		car.transform.name="Car";				
 		foreach(var line in dm.lines)
 		{
 			line.transform.parent=car.transform;
@@ -105,19 +104,21 @@ public class CarConstructor : MonoBehaviour
 			wh.transform.parent=car.transform;
 		}
 		carRb.gravityScale=1;
+		pilotBody.gravityScale=1;
 		dm.mode=DrawMode.drawing;
 		dm.canDraw=true;
 		applyButton.gameObject.SetActive(false);
 		wheelButton.gameObject.SetActive(false);
 		drawButton.gameObject.SetActive(false);
-		cinemachine.gameObject.SetActive(true);
+		GameManager.gm.cinemachine.Follow=car.transform;
+		GameManager.gm.cinemachine.LookAt=car.transform;
 	}
 	private Line GetLargestLine(List<Line> lines)
 	{
 		Line _line = lines[0];
 		foreach(Line li in lines)
 		{
-			if(li._collider.pointCount>_line._collider.pointCount)
+			if(li._points.Count>_line._points.Count)
 				_line=li;
 		}
 		dm.lines.Remove(_line);

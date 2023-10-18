@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager gm;
+
+	[SerializeField] private float scrollSpeed,lensSizeMax;
+	public CinemachineVirtualCamera cinemachine;
 	[HideInInspector] public DrawManager dm;
 	[HideInInspector] public CarConstructor constructor;
 	private Camera mainCam;
@@ -38,8 +42,14 @@ public class GameManager : MonoBehaviour
 		dm.mainCam=mainCam;
 		constructor.mainCam=mainCam;
 	}
-	
-    public void ReloadScene()
+	private void Update()
+	{
+		float scroll = Input.GetAxisRaw("Mouse ScrollWheel");
+		if((scroll<0&&cinemachine.m_Lens.OrthographicSize<lensSizeMax)||(scroll>0))
+			cinemachine.m_Lens.OrthographicSize-=scroll*scrollSpeed*Time.deltaTime;
+	}
+
+	public void ReloadScene()
 	{
 		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 	}
