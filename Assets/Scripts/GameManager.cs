@@ -4,54 +4,47 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	public WheelJoint2D wheel;
-	public DrawManager draw;
+	public static GameManager gm;
+	[HideInInspector] public DrawManager dm;
+	[HideInInspector] public CarConstructor constructor;
 	private Camera mainCam;
-	private List<WheelJoint2D> wheels=new();
+	
+	
+	private Transform _selectedButton;
+	public Transform selectedButton
+	{
+		get => _selectedButton;
+		set
+		{
+			_selectedButton=value;
+		}
+	}
+	private void Awake()
+	{
+		Application.targetFrameRate=40;
+		if(gm==null)
+			gm=this;
+	}
 	private void Start()
 	{
+		Init();
+			
+	}
+	private void Init()
+	{
+		dm=transform.GetChild(0).GetComponent<DrawManager>();
+		constructor=transform.GetChild(1).GetComponent<CarConstructor>();
 		mainCam=Camera.main;
+		dm.mainCam=mainCam;
+		constructor.mainCam=mainCam;
 	}
-	public void SpawnWheel()
+	
+    public void ReloadScene()
 	{
-		wheels.Add(Instantiate(wheel));
-		StartCoroutine(MoveWheelTowardsMouse(wheels[wheels.Count-1]));
+		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 	}
-	public IEnumerator MoveWheelTowardsMouse(WheelJoint2D go)
-	{		
-		while(Input.GetMouseButton(0)==false)
-		{
-			go.transform.position=(Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);			
-			yield return new WaitForSecondsRealtime(0.01f);
-		}
-		//go.connectedAnchor=go.transform.position;
-	}
-
-	public void Test()
+	public void Quit()
 	{
-		if(wheels.Count<1)
-			return;
-		Rigidbody2D generalLine = GetLargestLine(draw.lines).GetComponent<Rigidbody2D>();
-		foreach(var wh in wheels)
-		{
-			wh.connectedAnchor=wh.transform.position-generalLine.transform.position;
-			wh.useMotor=true;
-			wh.connectedBody=generalLine;
-			wh.GetComponent<Rigidbody2D>().gravityScale=1;
-		}
-		Debug.Log(generalLine.centerOfMass);
-		//Debug.Log(generalLine.GetComponent<Renderer>().bounds.center);
-		generalLine.gravityScale=1;
-
-	}
-	private Line GetLargestLine(List<Line> lines)
-	{
-		Line _line=lines[0];
-		foreach(Line li in lines)
-		{
-			if(li._collider.pointCount>_line._collider.pointCount)
-				_line=li;
-		}
-		return _line;
+		Application.Quit();
 	}
 }

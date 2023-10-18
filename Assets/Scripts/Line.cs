@@ -8,16 +8,7 @@ public class Line : MonoBehaviour
 	public EdgeCollider2D _collider;
 
 	private readonly List<Vector2> _points = new List<Vector2>();
-	void Start()
-	{
-		//_collider.offset-=(Vector2)transform.position;
-	}
-
-
-	void Update()
-	{
-
-	}
+	
 
 	public void SetPosition(Vector2 pos)
 	{

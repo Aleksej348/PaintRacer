@@ -1,33 +1,50 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum DrawMode { building,drawing}
 public class DrawManager : MonoBehaviour
 {
-	private Camera _cam;
-	[SerializeField] private Line _linePrefab;
-
+	public bool canDraw;
+	public List<Line> lines = new();
 	public const float RESOLUTION = .2f;
-	public List<Line> lines=new();
 
-	private Line _currentLine;
-	void Start()
+	[SerializeField] private Line drawLinePrefab, carLinePrefab;
+	[HideInInspector] public Camera mainCam;
+	private Line currLine,currPrefab;
+	private DrawMode _mode;
+	public DrawMode mode
 	{
-		_cam=Camera.main;
+		get => _mode;
+		set
+		{
+			_mode=value;
+			currPrefab=value==0 ? carLinePrefab : drawLinePrefab;
+		}
+	}
+	public void Init()
+	{
+		
 	}
 
 
-	void Update()
+	private void Update()
 	{
-		Vector2 mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
-
-		if(Input.GetMouseButtonDown(0))
+		if(canDraw)
 		{
-			_currentLine=Instantiate(_linePrefab,mousePos,Quaternion.identity);
-			lines.Add(_currentLine);
-		}
+			Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
 
-		if(Input.GetMouseButton(0))
-			_currentLine.SetPosition(mousePos);
+			if(Input.GetMouseButtonDown(0))
+			{
+				currLine=Instantiate(currPrefab,mousePos,Quaternion.identity);				
+			}
+
+			if(Input.GetMouseButton(0))
+				currLine.SetPosition(mousePos);
+
+			if(Input.GetMouseButtonUp(0))
+			{
+				lines.Add(currLine);
+			}
+		}
 	}
 }

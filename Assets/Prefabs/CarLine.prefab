@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 873645773201530726}
   - component: {fileID: 6925399104263976979}
   - component: {fileID: 3623340571202583752}
-  m_Layer: 8
-  m_Name: Line
+  m_Layer: 10
+  m_Name: CarLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ EdgeCollider2D:
   m_GameObject: {fileID: 105892294715655731}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: de9fae8b2a95e71468dab8607c2f8bd1, type: 2}
+  m_Material: {fileID: 6200000, guid: 41b2b447162a1654e9f2fe4494d138ab, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -80,7 +80,7 @@ GameObject:
   m_Component:
   - component: {fileID: 935225693725389901}
   - component: {fileID: 2948402297300020350}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: LineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
